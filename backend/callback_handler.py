@@ -19,6 +19,7 @@ class OrchestratorCallbackHandler:
                     arguments = json.loads(agent_input)
                     name = arguments.get("name", "")
                     if name != "":
+                        print("Creating specialized agent", name)
                         self.socketio.emit("create_specialized_agent", {"name": name})
                 except Exception:
                     pass

@@ -4,7 +4,7 @@ from strands_tools import calculator
 import os
 from flask import Flask, request, jsonify
 from flask_socketio import SocketIO, emit
-from prompts import agent_specialise, orchestrateur
+from prompts import agent_specialise, orchestrateur,orchestrator_start 
 from callback_handler import OrchestratorCallbackHandler, SpecializedAgentCallbackHandler
 
 app = Flask(__name__)
@@ -44,7 +44,7 @@ def handle_message(data):
     orchestrator = Agent(
         model=model, 
         tools=[specialized_agent], 
-        system_prompt=orchestrateur,
+        system_prompt=orchestrator_start,
         callback_handler=OrchestratorCallbackHandler(socketio), 
     )
     user_message = data.get("message") if isinstance(data, dict) else data
