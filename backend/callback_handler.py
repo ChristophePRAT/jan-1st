@@ -3,36 +3,42 @@ import json
 class OrchestratorCallbackHandler:
     def __init__(self, emit):
         self.emit = emit
+        self.current_agent_title = ""
     
     def __call__(self, **kwargs):
         data = kwargs.get("data", "")
         complete = kwargs.get("complete", False)
-        print("kwargs", kwargs)
 
-        if data:
-            print(data, end="")
-        elif "current_tool_use" in kwargs and kwargs["current_tool_use"].get("name"):
+        if "current_tool_use" in kwargs and kwargs["current_tool_use"].get("name"):
             tool_use = kwargs["current_tool_use"]
             tool_name = tool_use.get("name")
             if tool_name == "specialized_agent":
                 try: 
                     agent_input = tool_use.get("input", "")
                     arguments = json.loads(agent_input)
-                    name = arguments.get("name", "")
-                    if name != "":
-                        print("Creating specialized agent", name)
-                        self.emit("create_specialized_agent", {"name": name})
+                    title = arguments.get("title", "")
+                    if title != "" and title != self.current_agent_title:
+                        print("Creating specialized agent", title)
+                        self.emit("create_specialized_agent", {"name": title})
+                        self.current_agent_title = title
                 except Exception:
                     pass
+        elif data:
+            if complete:
+                self.current_agent_title = ""
+
+            if self.current_agent_title != "":
+                self.emit("specialized_agent_response", {"chunk": data, "name": self.current_agent_title})
+            print(data, end="")
 
 class SpecializedAgentCallbackHandler:
-    def __init__(self, emit, name):
+    def __init__(self, emit, title):
         self.emit = emit
-        self.name = name
+        self.title = title
     
     def __call__(self, **kwargs):
         data = kwargs.get("data", "")
 
         if data:
             print(data, end="")
-            self.emit("specialized_agent_response", {"chunk": data, "name": self.name})
+            self.emit("specialized_agent_response", {"chunk": data, "name": self.title})

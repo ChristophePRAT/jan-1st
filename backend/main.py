@@ -18,21 +18,20 @@ model = OpenAIModel(
         "api_key": os.getenv("FEATHERLESS_API_KEY"),
         "base_url": "https://api.featherless.ai/v1"
     },
-    model_id="moonshotai/Kimi-K2-Thinking",
+    model_id="moonshotai/Kimi-K2-Instruct",
     params={
         "max_tokens": 1000,
         "temperature": 0.2,
         }
 )
 
-
 @tool 
-def specialized_agent(query: str, name: str) -> str:
+def specialized_agent(query: str, title: str) -> str:
     try:
         sub_agent = Agent(
             model=model, 
             system_prompt=agent_specialise,
-            callback_handler=SpecializedAgentCallbackHandler(emit, name),
+            callback_handler=SpecializedAgentCallbackHandler(emit, title),
         )
         return sub_agent(query).message
     except Exception as e:
