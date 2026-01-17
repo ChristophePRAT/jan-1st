@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "flask>=3.1.2",
     "strands-agents-tools>=0.2.19",
-    "strands-agents[custom,custom-providers,openai]>=1.22.0",
+    "strands-agents[openai]>=1.22.0",
 ]
