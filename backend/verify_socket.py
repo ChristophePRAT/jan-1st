@@ -2,7 +2,7 @@
 import socketio
 import sys
 
-sio = socketio.Client()
+sio = socketio.Client(reconnection_delay=100, reconnection_delay_max=10000)
 
 @sio.event
 def connect():
@@ -16,6 +16,10 @@ def model_output(data):
 @sio.event
 def tool_use(data):
     print(f"Received tool use: {data}")
+
+@sio.event
+def calendar_event(data):
+    print(f"Received calendar event: {data}")
 
 @sio.event
 def create_specialized_agent(data):
@@ -37,7 +41,7 @@ def disconnect():
 
 if __name__ == '__main__':
     try:
-        sio.connect('http://127.0.0.1:5000')
+        sio.connect('http://127.0.0.1:3000')
         sio.wait()
     except Exception as e:
         print(f"An error occurred: {e}")

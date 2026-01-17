@@ -1,5 +1,5 @@
-from gevent import monkey
-monkey.patch_all()
+# from gevent import monkey
+# monkey.patch_all()
 
 from strands import Agent, tool
 from strands.models.openai import OpenAIModel
@@ -9,10 +9,10 @@ from flask import Flask, request, jsonify
 from flask_socketio import SocketIO, emit
 from prompts import agent_specialise, orchestrateur,orchestrator_start 
 from callback_handler import OrchestratorCallbackHandler, SpecializedAgentCallbackHandler
-from calendar_type import CalendarType
+from typing import Literal
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
 model = OpenAIModel(
     client_args={
@@ -21,7 +21,7 @@ model = OpenAIModel(
     },
     model_id="moonshotai/Kimi-K2-Instruct",
     params={
-        "max_tokens": 1000,
+        "max_tokens": 5000,
         "temperature": 0.2,
         }
 )
@@ -38,7 +38,20 @@ def specialized_agent(query: str, title: str) -> str:
     except Exception as e:
         return str(e)
 
-
+@tool
+def create_calendar_event(id: str, title: str, day: Literal["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"], startHour: int, duration: int) -> str:
+    try:
+        event = {
+            "id": id,
+            "title": title,
+            "day": day,
+            "startHour": startHour,
+            "duration": duration
+        }
+        emit("calendar_event", event)
+        return f"Event {title} created"
+    except Exception as e:
+        return str(e)
 
 @socketio.on("message")
 def handle_message(data):
@@ -46,10 +59,9 @@ def handle_message(data):
     print("~"*50)
     orchestrator = Agent(
         model=model, 
-        tools=[specialized_agent], 
+        tools=[specialized_agent, create_calendar_event], 
         system_prompt=orchestrator_start,
         callback_handler=OrchestratorCallbackHandler(emit),
-        output_type=CalendarType,
     )
     user_message = data.get("message") if isinstance(data, dict) else data
     
