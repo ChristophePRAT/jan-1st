@@ -1,4 +1,5 @@
 import json
+import asyncio
 
 class OrchestratorCallbackHandler:
     def __init__(self, emit):
@@ -19,7 +20,7 @@ class OrchestratorCallbackHandler:
                     title = arguments.get("title", "")
                     if title != "" and title != self.current_agent_title:
                         print("Creating specialized agent", title)
-                        self.emit("create_specialized_agent", {"name": title})
+                        asyncio.create_task(self.emit("create_specialized_agent", {"name": title}))
                         self.current_agent_title = title
                 except Exception:
                     pass
@@ -28,7 +29,7 @@ class OrchestratorCallbackHandler:
                 self.current_agent_title = ""
 
             if self.current_agent_title != "":
-                self.emit("specialized_agent_response", {"chunk": data, "name": self.current_agent_title})
+                asyncio.create_task(self.emit("specialized_agent_response", {"chunk": data, "name": self.current_agent_title}))
             print(data, end="")
 
 class SpecializedAgentCallbackHandler:
@@ -41,4 +42,4 @@ class SpecializedAgentCallbackHandler:
 
         if data:
             print(data, end="")
-            self.emit("specialized_agent_response", {"chunk": data, "name": self.title})
+            asyncio.create_task(self.emit("specialized_agent_response", {"chunk": data, "name": self.title}))

@@ -13,4 +13,7 @@ dependencies = [
     "simple-websocket>=1.0.0",
     "gevent-websocket>=0.10.1",
     "eventlet>=0.40.4",
+    "fastapi>=0.128.0",
+    "python-socketio[asgi]>=5.16.0",
+    "uvicorn>=0.40.0",
 ]
