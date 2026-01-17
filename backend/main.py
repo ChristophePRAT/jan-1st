@@ -54,9 +54,12 @@ def create_calendar_event(title: str, day: Literal["Lun", "Mar", "Mer", "Jeu", "
             "startHour": startHour,
             "duration": duration
         }
+
+        print("Event created:", event)
         emit("calendar_event", event)
         return f"Event {title} created"
     except Exception as e:
+        print("Error creating event:", e)
         return str(e)
 
 @socketio.on("message")
