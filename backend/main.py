@@ -63,8 +63,8 @@ def custom_callback_handler(**kwargs):
                 socketio.emit("create_specialized_agent", {"agent_job": job})
     
     # Process message delta from orchestrator
-    if "delta" in kwargs and kwargs.get("delta"):
-        socketio.emit("model_output", {"data": kwargs["delta"]})
+    # if "delta" in kwargs and kwargs.get("delta"):
+    #    socketio.emit("model_output", {"data": kwargs["delta"]})
 
 
 
