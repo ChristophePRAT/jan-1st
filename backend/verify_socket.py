@@ -7,7 +7,7 @@ sio = socketio.Client()
 @sio.event
 def connect():
     print("Connected to server")
-    sio.emit('message', {'message': 'Hello, World! Verify me.'})
+    sio.emit('message', {'message': 'Je veux perdre du poids.'})
 
 @sio.event
 def model_output(data):
@@ -39,7 +39,6 @@ if __name__ == '__main__':
     try:
         sio.connect('http://127.0.0.1:5000')
         sio.wait()
-        sio.send('Je veux perdre du poids.')
     except Exception as e:
         print(f"An error occurred: {e}")
         sys.exit(1)

@@ -14,9 +14,10 @@ class OrchestratorCallbackHandler:
                 arguments = tool_use.get("arguments", {})
                 name = arguments.get("name")
                 if name:
-                    job = recup_job_agent(name)
+                    print(f"Specialized agent name: {name}")
                     self.socketio.emit("create_specialized_agent", {"name": name})
         if data:
+            print(data, end="")
             self.socketio.emit("calendar", {"chunk": data})
 
 
@@ -29,4 +30,5 @@ class SpecializedAgentCallbackHandler:
         data = kwargs.get("data", "")
 
         if data:
+            print(data, end="")
             self.socketio.emit("specialized_agent_response", {"chunk": data, "name": self.name} )
