@@ -9,6 +9,7 @@ from flask import Flask, request, jsonify
 from flask_socketio import SocketIO, emit
 from prompts import agent_specialise, orchestrateur,orchestrator_start 
 from callback_handler import OrchestratorCallbackHandler, SpecializedAgentCallbackHandler
+from calendar_type import CalendarType
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
@@ -47,13 +48,15 @@ def handle_message(data):
         model=model, 
         tools=[specialized_agent], 
         system_prompt=orchestrator_start,
-        callback_handler=OrchestratorCallbackHandler(emit), 
+        callback_handler=OrchestratorCallbackHandler(emit),
+        output_type=CalendarType,
     )
     user_message = data.get("message") if isinstance(data, dict) else data
     
     response = orchestrator(user_message)
+    print("\n\n\n")
     print("="*50)
-    print(f"Response: {response.message}")
+    print(f"Response: {response}")
     print("="*50)
 
 if __name__ == "__main__":
