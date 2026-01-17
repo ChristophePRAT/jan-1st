@@ -18,6 +18,10 @@ def tool_use(data):
     print(f"Received tool use: {data}")
 
 @sio.event
+def create_specialized_agent(data):
+    print(f"Received specialized agent job: {data}")
+
+@sio.event
 def response(data):
     print(f"Received response: {data}")
     sio.disconnect()
