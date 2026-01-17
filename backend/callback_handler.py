@@ -1,8 +1,8 @@
 import json
 
 class OrchestratorCallbackHandler:
-    def __init__(self, socketio):
-        self.socketio = socketio
+    def __init__(self, emit):
+        self.emit = emit
     
     def __call__(self, **kwargs):
         data = kwargs.get("data", "")
@@ -20,13 +20,13 @@ class OrchestratorCallbackHandler:
                     name = arguments.get("name", "")
                     if name != "":
                         print("Creating specialized agent", name)
-                        self.socketio.emit("create_specialized_agent", {"name": name})
+                        self.emit("create_specialized_agent", {"name": name})
                 except Exception:
                     pass
 
 class SpecializedAgentCallbackHandler:
-    def __init__(self, socketio, name):
-        self.socketio = socketio
+    def __init__(self, emit, name):
+        self.emit = emit
         self.name = name
     
     def __call__(self, **kwargs):
@@ -34,4 +34,4 @@ class SpecializedAgentCallbackHandler:
 
         if data:
             print(data, end="")
-            self.socketio.emit("specialized_agent_response", {"chunk": data, "name": self.name} )
+            self.emit("specialized_agent_response", {"chunk": data, "name": self.name})
