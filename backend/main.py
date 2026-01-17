@@ -38,11 +38,17 @@ def specialized_agent(query: str, title: str) -> str:
     except Exception as e:
         return str(e)
 
-@tool
-def create_calendar_event(id: str, title: str, day: Literal["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"], startHour: int, duration: int) -> str:
+@tool(
+    inputSchema={
+        "title": "Title of the event",
+        "day": "Day of the event",
+        "startHour": "Start hour of the event",
+        "duration": "Duration of the event in minutes"
+    }
+)
+def create_calendar_event(title: str, day: Literal["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"], startHour: int, duration: int) -> str:
     try:
         event = {
-            "id": id,
             "title": title,
             "day": day,
             "startHour": startHour,
