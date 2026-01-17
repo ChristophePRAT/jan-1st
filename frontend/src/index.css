@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Good Vibes Palette - Warm & Soothing */
+    --background: 40 33% 98%;
+    --foreground: 30 10% 20%;
+
+    --card: 40 30% 99%;
+    --card-foreground: 30 10% 20%;
+
+    --popover: 40 30% 99%;
+    --popover-foreground: 30 10% 20%;
+
+    /* Bob - Warm Orange */
+    --primary: 28 85% 65%;
+    --primary-foreground: 40 33% 98%;
+
+    /* Soft neutral */
+    --secondary: 40 20% 94%;
+    --secondary-foreground: 30 10% 30%;
+
+    --muted: 40 15% 92%;
+    --muted-foreground: 30 8% 50%;
+
+    --accent: 40 25% 96%;
+    --accent-foreground: 30 10% 20%;
+
+    --destructive: 0 70% 60%;
+    --destructive-foreground: 40 33% 98%;
+
+    --border: 40 20% 90%;
+    --input: 40 20% 92%;
+    --ring: 28 85% 65%;
+
+    --radius: 1rem;
+
+    /* Agent Colors */
+    --agent-bob: 28 85% 65%;
+    --agent-bob-light: 28 85% 95%;
+    --agent-dietitian: 140 35% 55%;
+    --agent-dietitian-light: 140 35% 94%;
+    --agent-coach: 15 75% 65%;
+    --agent-coach-light: 15 75% 94%;
+    --agent-mentor: 210 60% 65%;
+    --agent-mentor-light: 210 60% 94%;
+    --user-bubble: 30 10% 25%;
+    --user-bubble-light: 30 10% 96%;
+
+    /* Glassmorphism */
+    --glass-bg: 40 30% 99% / 0.8;
+    --glass-border: 40 20% 95%;
+
+    /* Shadows */
+    --shadow-soft: 0 4px 24px -4px hsl(30 20% 20% / 0.08);
+    --shadow-medium: 0 8px 32px -8px hsl(30 20% 20% / 0.12);
+    --shadow-glow-bob: 0 0 40px -10px hsl(28 85% 65% / 0.4);
+    --shadow-glow-green: 0 0 40px -10px hsl(140 35% 55% / 0.4);
+    --shadow-glow-coral: 0 0 40px -10px hsl(15 75% 65% / 0.4);
+    --shadow-glow-blue: 0 0 40px -10px hsl(210 60% 65% / 0.4);
+
+    /* Sidebar */
+    --sidebar-background: 40 30% 98%;
+    --sidebar-foreground: 30 10% 25%;
+    --sidebar-primary: 28 85% 65%;
+    --sidebar-primary-foreground: 40 33% 98%;
+    --sidebar-accent: 40 25% 95%;
+    --sidebar-accent-foreground: 30 10% 25%;
+    --sidebar-border: 40 20% 90%;
+    --sidebar-ring: 28 85% 65%;
+  }
+
+  .dark {
+    --background: 30 15% 10%;
+    --foreground: 40 20% 95%;
+
+    --card: 30 15% 12%;
+    --card-foreground: 40 20% 95%;
+
+    --popover: 30 15% 12%;
+    --popover-foreground: 40 20% 95%;
+
+    --primary: 28 85% 60%;
+    --primary-foreground: 30 15% 10%;
+
+    --secondary: 30 10% 18%;
+    --secondary-foreground: 40 20% 90%;
+
+    --muted: 30 10% 20%;
+    --muted-foreground: 40 15% 60%;
+
+    --accent: 30 10% 18%;
+    --accent-foreground: 40 20% 95%;
+
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 40 20% 95%;
+
+    --border: 30 10% 20%;
+    --input: 30 10% 20%;
+    --ring: 28 85% 60%;
+
+    --sidebar-background: 30 15% 8%;
+    --sidebar-foreground: 40 20% 90%;
+    --sidebar-primary: 28 85% 60%;
+    --sidebar-primary-foreground: 30 15% 10%;
+    --sidebar-accent: 30 10% 15%;
+    --sidebar-accent-foreground: 40 20% 90%;
+    --sidebar-border: 30 10% 18%;
+    --sidebar-ring: 28 85% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+@layer components {
+  /* Glassmorphism Card */
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50 rounded-2xl;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .glass-card-elevated {
+    @apply bg-card/90 backdrop-blur-xl border border-border/30 rounded-3xl;
+    box-shadow: var(--shadow-medium);
+  }
+
+  /* Agent Message Bubbles */
+  .bubble-user {
+    @apply bg-foreground text-background rounded-3xl rounded-br-lg px-5 py-3;
+  }
+
+  .bubble-bob {
+    background: hsl(var(--agent-bob-light));
+    @apply rounded-3xl rounded-bl-lg px-5 py-3;
+    border: 1px solid hsl(var(--agent-bob) / 0.2);
+  }
+
+  .bubble-dietitian {
+    background: hsl(var(--agent-dietitian-light));
+    @apply rounded-3xl rounded-bl-lg px-5 py-3;
+    border: 1px solid hsl(var(--agent-dietitian) / 0.2);
+  }
+
+  .bubble-coach {
+    background: hsl(var(--agent-coach-light));
+    @apply rounded-3xl rounded-bl-lg px-5 py-3;
+    border: 1px solid hsl(var(--agent-coach) / 0.2);
+  }
+
+  .bubble-mentor {
+    background: hsl(var(--agent-mentor-light));
+    @apply rounded-3xl rounded-bl-lg px-5 py-3;
+    border: 1px solid hsl(var(--agent-mentor) / 0.2);
+  }
+
+  /* Agent Node Styles */
+  .node-bob {
+    background: linear-gradient(135deg, hsl(var(--agent-bob)), hsl(28 90% 55%));
+    box-shadow: var(--shadow-glow-bob);
+  }
+
+  .node-dietitian {
+    background: linear-gradient(135deg, hsl(var(--agent-dietitian)), hsl(140 40% 45%));
+    box-shadow: var(--shadow-glow-green);
+  }
+
+  .node-coach {
+    background: linear-gradient(135deg, hsl(var(--agent-coach)), hsl(15 80% 55%));
+    box-shadow: var(--shadow-glow-coral);
+  }
+
+  .node-mentor {
+    background: linear-gradient(135deg, hsl(var(--agent-mentor)), hsl(210 65% 55%));
+    box-shadow: var(--shadow-glow-blue);
+  }
+
+  /* Calendar Event Styles */
+  .event-health {
+    background: hsl(var(--agent-dietitian-light));
+    border-left: 3px solid hsl(var(--agent-dietitian));
+  }
+
+  .event-fitness {
+    background: hsl(var(--agent-coach-light));
+    border-left: 3px solid hsl(var(--agent-coach));
+  }
+
+  .event-study {
+    background: hsl(var(--agent-mentor-light));
+    border-left: 3px solid hsl(var(--agent-mentor));
+  }
+
+  /* Floating Animation */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  /* Pulse Glow Animation */
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
