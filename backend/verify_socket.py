@@ -39,7 +39,7 @@ if __name__ == '__main__':
     try:
         sio.connect('http://127.0.0.1:5000')
         sio.wait()
-        sio.send('Hello, World! Verify me.')
+        sio.send('Je veux perdre du poids.')
     except Exception as e:
         print(f"An error occurred: {e}")
         sys.exit(1)

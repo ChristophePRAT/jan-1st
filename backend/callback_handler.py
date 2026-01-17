@@ -12,10 +12,10 @@ class OrchestratorCallbackHandler:
             tool_name = tool_use.get("name")
             if tool_name == "specialized_agent":
                 arguments = tool_use.get("arguments", {})
-                query = arguments.get("query")
-                if query:
-                    job = recup_job_agent(query)
-                    self.socketio.emit("create_specialized_agent", {"agent_job": job})
+                name = arguments.get("name")
+                if name:
+                    job = recup_job_agent(name)
+                    self.socketio.emit("create_specialized_agent", {"name": name})
         if data:
             self.socketio.emit("calendar", {"chunk": data})
 
