@@ -6,8 +6,10 @@ class OrchestratorCallbackHandler:
     def __call__(self, **kwargs):
         data = kwargs.get("data", "")
         complete = kwargs.get("complete", False)
+        print("kwargs", kwargs)
 
         if "current_tool_use" in kwargs and kwargs["current_tool_use"].get("name"):
+            print("un outil a été appelé")
             tool_use = kwargs["current_tool_use"]
             tool_name = tool_use.get("name")
             if tool_name == "specialized_agent":
@@ -16,6 +18,7 @@ class OrchestratorCallbackHandler:
                 if name:
                     print(f"Specialized agent name: {name}")
                     self.socketio.emit("create_specialized_agent", {"name": name})
+
         if data:
             print(data, end="")
             self.socketio.emit("calendar", {"chunk": data})
