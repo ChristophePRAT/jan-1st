@@ -1,3 +1,6 @@
+from gevent import monkey
+monkey.patch_all()
+
 from strands import Agent, tool
 from strands.models.openai import OpenAIModel
 from strands_tools import calculator
@@ -8,7 +11,7 @@ from prompts import agent_specialise, orchestrateur,orchestrator_start
 from callback_handler import OrchestratorCallbackHandler, SpecializedAgentCallbackHandler
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
 
 model = OpenAIModel(
     client_args={
@@ -29,7 +32,7 @@ def specialized_agent(query: str, name: str) -> str:
         sub_agent = Agent(
             model=model, 
             system_prompt=agent_specialise,
-            callback_handler=SpecializedAgentCallbackHandler(socketio, name),
+            callback_handler=SpecializedAgentCallbackHandler(emit, name),
         )
         return sub_agent(query).message
     except Exception as e:
@@ -45,7 +48,7 @@ def handle_message(data):
         model=model, 
         tools=[specialized_agent], 
         system_prompt=orchestrator_start,
-        callback_handler=OrchestratorCallbackHandler(socketio), 
+        callback_handler=OrchestratorCallbackHandler(emit), 
     )
     user_message = data.get("message") if isinstance(data, dict) else data
     
@@ -55,4 +58,4 @@ def handle_message(data):
     print("="*50)
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    socketio.run(app, host="0.0.0.0", port=3000)
