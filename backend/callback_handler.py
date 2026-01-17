@@ -7,6 +7,7 @@ class OrchestratorCallbackHandler:
     def __call__(self, **kwargs):
         data = kwargs.get("data", "")
         complete = kwargs.get("complete", False)
+        print("kwargs", kwargs)
 
         if data:
             print(data, end="")
